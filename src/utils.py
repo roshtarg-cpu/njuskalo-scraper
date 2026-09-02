@@ -309,15 +309,32 @@ async def fetch_page(url: str, proxy_url: Optional[Dict] = None, timeout: int = 
             await context.close()
             return None
         
-        # Check if we got blocked content in HTML
-        if 'validate.perfdrive' in html or 'ShieldSquare' in html or '_pxBlock' in html:
+        # Check if we got valid content (look for __INITIAL_STATE__ as success indicator)
+        has_initial_state = '__INITIAL_STATE__' in html
+        
+        # Check if we got blocked content  
+        has_shield_block = 'validate.perfdrive' in html or ('ShieldSquare' in html and not has_initial_state)
+        has_px_block = '_pxBlock' in html or 'px-captcha' in html
+        
+        if has_shield_block or has_px_block:
             logger.warning(f'⚠️ Anti-bot content detected in HTML ({len(html)} bytes)')
             # Log a snippet for debugging
-            snippet = html[:500] if len(html) > 500 else html
-            logger.warning(f'HTML snippet: {snippet[:200]}...')
-            logger.warning('💡 This site requires residential proxies to bypass bot detection')
-            await context.close()
-            return None
+            snippet = html[:1000] if len(html) > 1000 else html
+            logger.warning(f'HTML snippet (first 300 chars): {snippet[:300]}...')
+            logger.warning('💡 This site uses advanced bot detection - trying with longer wait...')
+            
+            # Try waiting longer for JS to complete
+            await asyncio.sleep(5)
+            html = await page.content()
+            
+            # Re-check after wait
+            if '__INITIAL_STATE__' in html:
+                logger.info('✅ Content loaded successfully after extended wait')
+            else:
+                logger.warning('❌ Still blocked after extended wait')
+                logger.warning('💡 Recommendation: Residential proxies are required for this site')
+                await context.close()
+                return None
         
         logger.info(f'✅ Fetched {len(html)} bytes from {url}')
         

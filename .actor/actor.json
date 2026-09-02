@@ -3,7 +3,7 @@
   "name": "njuskalo-scraper",
   "title": "Njuškalo Scraper - Croatia Marketplace (Claude, ChatGPT & AI MCP Compatible) 🤖",
   "description": "🇭🇷 Extract listings from Njuškalo (njuskalo.hr), Croatia's #1 marketplace. Cars, real estate, jobs, electronics & more. Advanced category filters, AI-agent optimized for Claude/ChatGPT/MCP integrations. Residential proxy support for reliable extraction. 🚀",
-  "version": "1.0.4",
+  "version": "1.1",
   "inputSchema": "./input_schema.json",
   "outputSchema": "./output_schema.json",
   "storages": {

@@ -288,10 +288,10 @@ async def fetch_page(url: str, proxy_url: Optional[Dict] = None, timeout: int = 
             await context.close()
             return None
         
-        # Check for anti-bot redirects
+        # Check for anti-bot redirects in URL
         current_url = page.url
-        if 'validate.perfdrive' in current_url or 'shield' in current_url.lower():
-            logger.warning(f'⚠️ Anti-bot redirect detected: {current_url}')
+        if 'validate.perfdrive' in current_url or 'shieldsquare' in current_url.lower():
+            logger.warning(f'⚠️ Anti-bot redirect detected in URL: {current_url}')
             logger.warning('💡 Recommendation: Use residential proxies (ShieldSquare is blocking datacenter IPs)')
             await context.close()
             return None
@@ -309,9 +309,12 @@ async def fetch_page(url: str, proxy_url: Optional[Dict] = None, timeout: int = 
             await context.close()
             return None
         
-        # Check if we got blocked content
-        if 'validate.perfdrive' in html or 'ShieldSquare' in html:
-            logger.warning('⚠️ Anti-bot content detected in HTML')
+        # Check if we got blocked content in HTML
+        if 'validate.perfdrive' in html or 'ShieldSquare' in html or '_pxBlock' in html:
+            logger.warning(f'⚠️ Anti-bot content detected in HTML ({len(html)} bytes)')
+            # Log a snippet for debugging
+            snippet = html[:500] if len(html) > 500 else html
+            logger.warning(f'HTML snippet: {snippet[:200]}...')
             logger.warning('💡 This site requires residential proxies to bypass bot detection')
             await context.close()
             return None

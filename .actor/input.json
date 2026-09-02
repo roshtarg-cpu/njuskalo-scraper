@@ -1,0 +1,12 @@
+{
+  "category": "auti",
+  "searchQuery": "",
+  "location": "",
+  "priceMin": 0,
+  "priceMax": 0,
+  "condition": "Any",
+  "sortBy": "datum-silazno",
+  "includeDescription": false,
+  "maxResults": 10,
+  "proxyConfiguration": null
+}

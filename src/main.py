@@ -5,7 +5,7 @@ from typing import Dict, Optional
 import logging
 
 from apify import Actor
-from .utils import parse_proxy, fetch_page, build_search_url
+from .utils import parse_proxy, fetch_page, build_search_url, cleanup_browser
 from .parser import extract_initial_state, extract_listings_from_state, extract_listings_from_html
 
 # Configure logging
@@ -42,9 +42,9 @@ async def main() -> None:
         logger.info(f'💰 Price range: {price_min}-{price_max}')
         logger.info(f'🔢 Max results: {max_results}')
         
-        # Parse proxy
-        proxy_url = parse_proxy(proxy_config)
-        if proxy_url:
+        # Parse proxy (now returns Playwright proxy dict)
+        proxy_config_dict = parse_proxy(proxy_config)
+        if proxy_config_dict:
             logger.info('🌐 Using Apify residential proxy')
         else:
             logger.info('⚠️ No proxy configured - direct connection')
@@ -75,7 +75,7 @@ async def main() -> None:
                 html = None
                 for attempt in range(3):
                     try:
-                        html = await fetch_page(url, proxy_url)
+                        html = await fetch_page(url, proxy_config_dict)
                         requests_made += 1
                         
                         if html:
@@ -196,6 +196,10 @@ async def main() -> None:
             import traceback
             traceback.print_exc()
             raise
+        finally:
+            # Cleanup browser resources
+            await cleanup_browser()
+            logger.info('🧹 Browser cleanup complete')
 
 
 if __name__ == '__main__':

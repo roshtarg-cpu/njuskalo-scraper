@@ -1,62 +1,6 @@
 {
   "actorSpecification": 1,
-  "fields": {
-    "url": {
-      "type": "string",
-      "title": "URL",
-      "description": "Listing URL"
-    },
-    "title": {
-      "type": "string",
-      "title": "Title",
-      "description": "Listing title"
-    },
-    "price": {
-      "type": "string",
-      "title": "Price",
-      "description": "Price (HRK/EUR)"
-    },
-    "location": {
-      "type": "string",
-      "title": "Location",
-      "description": "City/Region"
-    },
-    "category": {
-      "type": "string",
-      "title": "Category",
-      "description": "Listing category"
-    },
-    "condition": {
-      "type": "string",
-      "title": "Condition",
-      "description": "Item condition (new/used)"
-    },
-    "description": {
-      "type": "string",
-      "title": "Description",
-      "description": "Full listing description"
-    },
-    "seller": {
-      "type": "string",
-      "title": "Seller",
-      "description": "Seller name/username"
-    },
-    "postedDate": {
-      "type": "string",
-      "title": "Posted Date",
-      "description": "Listing publication date"
-    },
-    "imageUrl": {
-      "type": "string",
-      "title": "Image URL",
-      "description": "Main listing image"
-    },
-    "scrapedAt": {
-      "type": "string",
-      "title": "Scraped At",
-      "description": "ISO timestamp of extraction"
-    }
-  },
+  "fields": {},
   "views": {
     "overview": {
       "title": "Overview",
